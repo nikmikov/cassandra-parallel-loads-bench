@@ -17,7 +17,6 @@ object CassandraLoad extends LoggingSupport {
   class CliConf(args: Seq[String]) extends ScallopConf(args) {
     version("CassandraLoadTest (c) 2017 Nikolay Mikov")
     banner(s"Usage: $className [OPTIONS]\n\tOptions:")
-    val extraProps  = props[String]()
     val hostName = opt[String](
       name = "host",
       descr = "Cassandra cluster contact point: hostname",
@@ -176,7 +175,7 @@ object CassandraLoad extends LoggingSupport {
     val batch = new BatchStatement(BatchStatement.Type.UNLOGGED)
 
     val byteBuffer = ByteBuffer.allocate(slice.blockSize)
-
+    val lastIx = slice.endId - 1
     def insertOp(ix: Long): Option[ResultSetFuture] = {
       byteBuffer.clear()
       val bytesRead = slice.channel.read(byteBuffer)
@@ -189,7 +188,7 @@ object CassandraLoad extends LoggingSupport {
           Some(session.executeAsync(bound))
         } else {
           batch.add(bound)
-          if (batch.size == batchSize || ix == slice.endId) {
+          if (batch.size == batchSize || ix == lastIx) {
             val f = session.executeAsync(batch)
             batch.clear()
             Some(f)

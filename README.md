@@ -22,7 +22,7 @@ You can run it via sbt runner or building and running fat jar directly
 
 ### Run with SBT runner
 
-`sbt run --input $TMPDIR/data.bin`
+`sbt runLoad --input $TMPDIR/data.bin`
 
 or
 
