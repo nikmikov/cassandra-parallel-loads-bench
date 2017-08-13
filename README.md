@@ -26,7 +26,7 @@ You can run it via sbt runner or building and running fat jar directly
 
 or
 
-`sbt -Dorg.slf4j.simpleLogger.defaultLogLevel=debug "run --input $TMPDIR/data.bin"`
+`sbt -Dorg.slf4j.simpleLogger.defaultLogLevel=debug "runLoad --input $TMPDIR/data.bin"`
 
 
 to enable debug output
